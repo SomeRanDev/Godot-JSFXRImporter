@@ -1,6 +1,8 @@
 extends EditorImportPlugin
 class_name JSFXRImporter
 
+var editor_settings: EditorSettings;
+
 func _get_importer_name():
 	return "somerandev.jsfxr";
 
@@ -34,6 +36,7 @@ func _import(source_file, save_path, options, r_platform_variants, r_gen_files):
 
 	var temp_file = "res://addons/SomeRanDev_JSFXRImporter/temp";
 
+	var node_exe_path = editor_settings.get_setting(JSFXRImporterPlugin.NODEJS_EXE_SETTING_PATH);
 	var arguments = [
 		ProjectSettings.globalize_path("res://addons/SomeRanDev_JSFXRImporter/js_code/index.js"),
 		ProjectSettings.globalize_path(source_file),
@@ -41,7 +44,7 @@ func _import(source_file, save_path, options, r_platform_variants, r_gen_files):
 	];
 
 	var output = [];
-	if OS.execute("D:/nodejs/22.14.0/node.exe", arguments, output, true, false) != 0:
+	if OS.execute(node_exe_path, arguments, output, true, false) != 0:
 		temp_file = "res://addons/SomeRanDev_JSFXRImporter/error.wav";
 		print("There was an error generating the JSFXR .wav file.\nView output below:\n\n" + output[0]);
 
